@@ -7,7 +7,7 @@ class Project {
     LinkedList<Book> books = new LinkedList<>();
     int menuOption = 0;
     Scanner scn = new Scanner(System.in);
-    while (menuOption != 4) {
+    while (true) {
       printMenu();
       menuOption = Integer.parseInt(scn.nextLine());
       switch (menuOption) {
@@ -17,9 +17,17 @@ class Project {
         case 2:
           buyBook(books, scn);
           break;
+        case 3:
+          searchForBook(books, scn);
+          break;
+        case 4:
+          System.out.println("Program terminated. Goodbye...");
+          scn.close();
+          return;
+        default:
+          System.out.println("Please choose a valid option");
       }
     }
-    scn.close();
   }
 
   public static void printMenu() {
@@ -53,8 +61,9 @@ class Project {
     String title = scn.nextLine();
     System.out.print("Enter author name: ");
     String author = scn.nextLine();
-    System.out.println("Quantity: ");
+    System.out.print("Quantity: ");
     int quantity = Integer.parseInt(scn.nextLine());
+    System.out.println();
     int boughtBookIndex = searchBook(books, title, author);
     if (boughtBookIndex != -1) {
       Book boughtBook = books.get(boughtBookIndex);
@@ -66,13 +75,29 @@ class Project {
     }
   }
 
-  public static int searchBook(LinkedList<Book> books, String title, String author) {
+  public static int searchBook(LinkedList<Book> books, String title, String... author) {
     for (int i = 0; i < books.size(); i++) {
       Book curBook = books.get(i);
-      if (curBook.title.equalsIgnoreCase(title) && curBook.author.equalsIgnoreCase(author)) {
+      if (author.length != 0 && curBook.title.equalsIgnoreCase(title) && curBook.author.equalsIgnoreCase(author[0])) {
+        return i;
+      }
+      if (curBook.title.equalsIgnoreCase(title)) {
         return i;
       }
     }
     return -1;
+  }
+
+  public static void searchForBook(LinkedList<Book> books, Scanner scn) {
+    System.out.print("\nEnter book title");
+    String title = scn.nextLine();
+    int foundBookIndex = searchBook(books, title);
+    if (foundBookIndex != -1) {
+      Book foundBook = books.get(foundBookIndex);
+      System.out.println("Detalis:");
+      System.out.println("Author name: " + foundBook.author);
+      System.out.println("Amount: " + foundBook.boughtPrice);
+      System.out.println("Stock position: " + foundBook.position);
+    }
   }
 }
