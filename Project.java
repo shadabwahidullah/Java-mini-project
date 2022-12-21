@@ -6,8 +6,8 @@ class Project {
   public static void main(String[] args) {
     LinkedList<Book> books = new LinkedList<>();
     int menuOption = 0;
+    Scanner scn = new Scanner(System.in);
     while (menuOption != 4) {
-      Scanner scn = new Scanner(System.in);
       printMenu();
       menuOption = Integer.parseInt(scn.nextLine());
       switch (menuOption) {
@@ -19,6 +19,7 @@ class Project {
           break;
       }
     }
+    scn.close();
   }
 
   public static void printMenu() {
@@ -39,13 +40,12 @@ class Project {
     System.out.print("Enter publisher name: ");
     String publisher = scn.nextLine();
     System.out.print("Enter price: ");
-    double boughtPrice = scn.nextDouble();
+    double boughtPrice = Double.parseDouble(scn.nextLine());
     System.out.print("Enter stock position: ");
-    int position = scn.nextInt();
+    int position = Integer.parseInt(scn.nextLine());
 
     Book newBook = new Book(title, author, publisher, position, boughtPrice);
     books.add(newBook);
-    scn.close();
   }
 
   public static void buyBook(LinkedList<Book> books, Scanner scn) {
@@ -53,11 +53,26 @@ class Project {
     String title = scn.nextLine();
     System.out.print("Enter author name: ");
     String author = scn.nextLine();
-    System.out.print("Quantity: ");
+    System.out.println("Quantity: ");
     int quantity = Integer.parseInt(scn.nextLine());
+    int boughtBookIndex = searchBook(books, title, author);
+    if (boughtBookIndex != -1) {
+      Book boughtBook = books.get(boughtBookIndex);
+      System.out.println("Details:");
+      System.out.println("Amount: $" + boughtBook.boughtPrice * quantity);
+      System.out.println("Book bought successfully");
+    } else {
+      System.out.println("\nBook is not available");
+    }
+  }
 
-    System.out.println("Details:");
-    System.out.println("Amount: $" + quantity);
-    System.out.println("Book bought successfully");
+  public static int searchBook(LinkedList<Book> books, String title, String author) {
+    for (int i = 0; i < books.size(); i++) {
+      Book curBook = books.get(i);
+      if (curBook.title.equalsIgnoreCase(title) && curBook.author.equalsIgnoreCase(author)) {
+        return i;
+      }
+    }
+    return -1;
   }
 }
