@@ -2,17 +2,20 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 class Project {
-  
+
   public static void main(String[] args) {
     LinkedList<Book> books = new LinkedList<>();
-    Scanner scn = new Scanner(System.in);
     int menuOption = 0;
     while (menuOption != 4) {
+      Scanner scn = new Scanner(System.in);
       printMenu();
-      menuOption = scn.nextInt();
+      menuOption = Integer.parseInt(scn.nextLine());
       switch (menuOption) {
         case 1:
-          addNewBook(books);
+          addNewBook(books, scn);
+          break;
+        case 2:
+          buyBook(books, scn);
           break;
       }
     }
@@ -24,10 +27,11 @@ class Project {
     System.out.println("2. Buy a book");
     System.out.println("3. Search for a book using title");
     System.out.println("4. Exit\n");
+
+    System.out.print("Enter a choice: ");
   }
 
-  public static void addNewBook(LinkedList<Book> books) {
-    Scanner scn = new Scanner(System.in);
+  public static void addNewBook(LinkedList<Book> books, Scanner scn) {
     System.out.print("Enter author name: ");
     String author = scn.nextLine();
     System.out.print("Enter book title: ");
@@ -41,5 +45,19 @@ class Project {
 
     Book newBook = new Book(title, author, publisher, position, boughtPrice);
     books.add(newBook);
+    scn.close();
+  }
+
+  public static void buyBook(LinkedList<Book> books, Scanner scn) {
+    System.out.print("Enter book title: ");
+    String title = scn.nextLine();
+    System.out.print("Enter author name: ");
+    String author = scn.nextLine();
+    System.out.print("Quantity: ");
+    int quantity = Integer.parseInt(scn.nextLine());
+
+    System.out.println("Details:");
+    System.out.println("Amount: $" + quantity);
+    System.out.println("Book bought successfully");
   }
 }
