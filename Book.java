@@ -17,7 +17,7 @@ public class Book {
   public void printBookDetails () {
     System.out.println("Details: ");
     System.out.println("Author name: " + this.author);
-    System.out.println("Amount: $" + this.boughtPrice);
+    System.out.println("Amount: $" + this.boughtPrice); 
     System.out.println("Stock position: " + this.position);
   }
 }
